@@ -22,7 +22,9 @@ def mine_rules(basket, min_support=0.3, min_confidence=0.6):
 
 def clean_rules(rules):
     def clean_frozenset(frozenset_obj):
-        return ', '.join(sorted(list(frozenset_obj)))
+        items = sorted(list(frozenset_obj))
+        clean_items = [item.split('_', 1)[-1] for item in items]
+        return ', '.join(clean_items)
 
     rules = rules.copy()
     rules['antecedents'] = rules['antecedents'].apply(clean_frozenset)
