@@ -9,15 +9,13 @@ def main():
     df_encoded = encode_features(df)
     basket = pd.get_dummies(df_encoded)
 
-    rules_alzheimer, rules_no_alzheimer = mine_rules(basket, 0.4, 0.7)
+    rules_alzheimer, rules_no_alzheimer = mine_rules(basket, 0.11, 0.6)
 
     rules_alzheimer = clean_rules(rules_alzheimer)
     rules_alzheimer = remove_duplicate_rules(rules_alzheimer)
-    rules_alzheimer = prune_rules(rules_alzheimer)
 
     rules_no_alzheimer = clean_rules(rules_no_alzheimer)
     rules_no_alzheimer = remove_duplicate_rules(rules_no_alzheimer)
-    rules_no_alzheimer = prune_rules(rules_no_alzheimer)
 
     rules_alzheimer.to_csv(
         'alzheimers_association_rules_Diagnosis_1.csv', index=False)
