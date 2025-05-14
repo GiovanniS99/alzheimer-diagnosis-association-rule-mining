@@ -1,32 +1,25 @@
-import pandas as pd
-from preprocessing import discretize, encode_features
-from mining import mine_rules, clean_rules, remove_duplicate_rules, prune_rules
+from data_pipeline import load_and_prepare_data
+from rules_miner import generate_and_format_rules_expression, save_rules
+from reporting import print_rules_summary
 
 
 def main():
-    df = pd.read_csv('data/alzheimers_disease_data.csv')
-    df = discretize(df)
-    df_encoded = encode_features(df)
-    basket = pd.get_dummies(df_encoded)
+    basket = load_and_prepare_data('data/alzheimers_disease_data.csv')
 
-    rules_alzheimer, rules_no_alzheimer = mine_rules(basket, 0.11, 0.6)
+    rules_alzheimer, rules_no_alzheimer = generate_and_format_rules_expression(
+        basket,
+        min_support=0.11,
+        min_confidence=0.5
+    )
 
-    rules_alzheimer = clean_rules(rules_alzheimer)
-    rules_alzheimer = remove_duplicate_rules(rules_alzheimer)
+    save_rules(
+        rules_alzheimer,
+        rules_no_alzheimer,
+        'output/alzheimers_association_rules_Diagnosis_1.csv',
+        'output/alzheimers_association_rules_Diagnosis_0.csv'
+    )
 
-    rules_no_alzheimer = clean_rules(rules_no_alzheimer)
-    rules_no_alzheimer = remove_duplicate_rules(rules_no_alzheimer)
-
-    rules_alzheimer.to_csv(
-        'output/alzheimers_association_rules_Diagnosis_1.csv', index=False)
-    rules_no_alzheimer.to_csv(
-        'output/alzheimers_association_rules_Diagnosis_0.csv', index=False)
-
-    print("=== Regras para Diagnosis = 1 (Alzheimer) ===")
-    print(rules_alzheimer.head(15))
-
-    print("\n=== Regras para Diagnosis = 0 (Sem Alzheimer) ===")
-    print(rules_no_alzheimer.head(15))
+    print_rules_summary(rules_alzheimer, rules_no_alzheimer, n=15)
 
 
 if __name__ == "__main__":
