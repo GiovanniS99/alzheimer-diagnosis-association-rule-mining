@@ -62,9 +62,9 @@ def create_pie_chart_variable_types(output_folder='output'):
 
 def create_bar_chart_rule_counts(output_folder='output', min_support=0.1, min_confidence=0.6):
     path_diag1 = os.path.join(
-        output_folder, 'alzheimers_association_rules_Diagnosis_1_s-{min_support}_c-{min_confidence}.csv')
+        output_folder, f'alzheimers_association_rules_Diagnosis_1_s-{min_support}_c-{min_confidence}.csv')
     path_diag0 = os.path.join(
-        output_folder, 'alzheimers_association_rules_Diagnosis_0_s-{min_support}_c-{min_confidence}.csv')
+        output_folder, f'alzheimers_association_rules_Diagnosis_0_s-{min_support}_c-{min_confidence}.csv')
 
     count_diag1 = 0
     count_diag0 = 0
@@ -84,11 +84,11 @@ def create_bar_chart_rule_counts(output_folder='output', min_support=0.1, min_co
         count_diag0 = 0
 
     counts = {}
-    if count_diag1 > 0:
+    if count_diag1 > 0 or count_diag1 == 0:
         counts['Com Alzheimer'] = count_diag1
-    if count_diag0 > 0:
+    if count_diag0 > 0 or count_diag0 == 0:
         counts['Sem Alzheimer'] = count_diag0
-    if count_diag1 + count_diag0 > 0:
+    if count_diag1 + count_diag0 > 0 or count_diag1 + count_diag0 == 0:
         counts['Totalidade'] = count_diag1 + count_diag0
 
     if not counts:
