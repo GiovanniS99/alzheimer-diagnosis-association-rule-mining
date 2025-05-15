@@ -14,7 +14,8 @@ def main():
         print(
             f" ======== Mineração com suporte = {min_support} e confiança = {min_confidence} ========\n")
 
-        basket = load_and_prepare_data('data/alzheimers_disease_data.csv')
+        basket = load_and_prepare_data(
+            'data/alzheimers_disease_data.csv', True)
 
         rules_alzheimer, rules_no_alzheimer = generate_and_format_rules_expression(
             basket,
@@ -25,8 +26,8 @@ def main():
         save_rules(
             rules_alzheimer,
             rules_no_alzheimer,
-            'output/alzheimers_association_rules_Diagnosis_1.csv',
-            'output/alzheimers_association_rules_Diagnosis_0.csv'
+            'output/alzheimers_association_rules_Diagnosis_1_s-{min_support}_c-{min_confidence}.csv',
+            'output/alzheimers_association_rules_Diagnosis_0_s-{min_support}_c-{min_confidence}.csv'
         )
 
         print_rules_summary(rules_alzheimer, rules_no_alzheimer, n=15)

@@ -50,6 +50,7 @@ def create_pie_chart_variable_types(output_folder='output'):
         wedgeprops=dict(width=0.5),
         textprops=dict(color="black", fontsize=12)
     )
+
     ax.axis('equal')
     plt.title('Proporção de Variáveis Contínuas vs Discretas')
 
@@ -61,9 +62,9 @@ def create_pie_chart_variable_types(output_folder='output'):
 
 def create_bar_chart_rule_counts(output_folder='output', min_support=0.1, min_confidence=0.6):
     path_diag1 = os.path.join(
-        output_folder, 'alzheimers_association_rules_Diagnosis_1.csv')
+        output_folder, 'alzheimers_association_rules_Diagnosis_1_s-{min_support}_c-{min_confidence}.csv')
     path_diag0 = os.path.join(
-        output_folder, 'alzheimers_association_rules_Diagnosis_0.csv')
+        output_folder, 'alzheimers_association_rules_Diagnosis_0_s-{min_support}_c-{min_confidence}.csv')
 
     count_diag1 = 0
     count_diag0 = 0
@@ -82,13 +83,18 @@ def create_bar_chart_rule_counts(output_folder='output', min_support=0.1, min_co
     except EmptyDataError:
         count_diag0 = 0
 
-    counts = {
-        'Com Alzheimer': count_diag1,
-        'Sem Alzheimer': count_diag0,
-        'Totalidade': count_diag1 + count_diag0
-    }
+    counts = {}
+    if count_diag1 > 0:
+        counts['Com Alzheimer'] = count_diag1
+    if count_diag0 > 0:
+        counts['Sem Alzheimer'] = count_diag0
+    if count_diag1 + count_diag0 > 0:
+        counts['Totalidade'] = count_diag1 + count_diag0
 
-    bar_colors = ['#FF6961', '#77DD77', '#779ECB']
+    if not counts:
+        return
+
+    bar_colors = ['#FF6961', '#77DD77', '#779ECB'][:len(counts)]
     bar_width = 0.25
 
     fig, ax = plt.subplots()
