@@ -128,7 +128,7 @@ def create_bar_chart_rule_counts(output_folder='output', min_support=0.1, min_co
         ax.set_ylim(0, max_count * 1.6)
 
     plt.title(
-        f'Quantidade de Regras Mineradas\n(Suporte ≥ {min_support}, Confiança ≥ {min_confidence})', fontsize=14)
+        f'Quantidade de Regras Mineradas\n(Suporte ≥ {min_support}, Confiança ≥ {min_confidence}, Lift ≥ 1.5)', fontsize=14)
     plt.ylabel('Nº de Regras', fontsize=12)
     plt.xlabel('Tipo de Diagnóstico', fontsize=12)
 

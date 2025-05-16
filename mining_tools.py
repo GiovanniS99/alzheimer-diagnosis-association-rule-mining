@@ -2,11 +2,13 @@ from mlxtend.frequent_patterns import apriori, association_rules
 from pandas import DataFrame
 
 
-def mine_rules(basket, min_support=0.3, min_confidence=0.6):
+def mine_rules(basket, min_support=0.3, min_confidence=0.6, min_lift=1.5):
     frequent_itemsets = apriori(
         basket, min_support=min_support, use_colnames=True)
     rules = association_rules(
         frequent_itemsets, metric="confidence", min_threshold=min_confidence)
+
+    rules = rules[rules['lift'] >= min_lift]
 
     rules_alzheimer = rules[rules['consequents'].astype(
         str).str.contains('Diagnosis=1')]

@@ -7,11 +7,11 @@ from charts import create_pie_chart_variable_types, create_bar_chart_rule_counts
 def main():
 
     # Definindo os parâmetros de suporte e confiança
-    # list_of_args = [[0.65, 0.7], [0.5, 0.7], [
-    #     0.55, 0.7], [0.55, 0.65], [0.6, 0.7]]
+    list_of_args = [[0.65, 0.7], [0.5, 0.7], [
+        0.55, 0.7], [0.55, 0.65], [0.6, 0.7]]
 
-    list_of_args = [[0.12, 0.6], [0.12, 0.5]]
-    
+    list_of_args = [[0.11, 0.6], [0.11, 0.5]]
+
     for min_support, min_confidence in list_of_args:
 
         print(
