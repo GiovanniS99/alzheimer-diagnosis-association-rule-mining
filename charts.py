@@ -84,12 +84,16 @@ def create_bar_chart_rule_counts(output_folder='output', min_support=0.1, min_co
         count_diag0 = 0
 
     counts = {}
-    if count_diag1 > 0 or count_diag1 == 0:
-        counts['Com Alzheimer'] = count_diag1
-    if count_diag0 > 0 or count_diag0 == 0:
-        counts['Sem Alzheimer'] = count_diag0
-    if count_diag1 + count_diag0 > 0 or count_diag1 + count_diag0 == 0:
-        counts['Totalidade'] = count_diag1 + count_diag0
+    if min_support < 0.35:
+        if count_diag1 > 0:
+            counts['Com Alzheimer'] = count_diag1
+    else:
+        if count_diag1 > 0:
+            counts['Com Alzheimer'] = count_diag1
+        if count_diag0 > 0:
+            counts['Sem Alzheimer'] = count_diag0
+        if count_diag1 + count_diag0 > 0:
+            counts['Totalidade'] = count_diag1 + count_diag0
 
     if not counts:
         return
@@ -100,6 +104,9 @@ def create_bar_chart_rule_counts(output_folder='output', min_support=0.1, min_co
     fig, ax = plt.subplots()
     bars = ax.bar(counts.keys(), counts.values(),
                   color=bar_colors, width=bar_width, edgecolor='none')
+
+    if len(counts) == 1:
+        ax.set_xlim(-0.75, 0.75)
 
     ax.spines['top'].set_visible(False)
     ax.spines['right'].set_visible(False)
@@ -115,6 +122,10 @@ def create_bar_chart_rule_counts(output_folder='output', min_support=0.1, min_co
     max_count = max(counts.values())
     ax.yaxis.set_major_locator(MaxNLocator(integer=True))
     ax.set_ylim(0, max_count * 1.2)
+
+    if len(counts) == 1:
+        ax.set_xlim(-0.75, 0.75)
+        ax.set_ylim(0, max_count * 1.6)
 
     plt.title(
         f'Quantidade de Regras Mineradas\n(Suporte ≥ {min_support}, Confiança ≥ {min_confidence})', fontsize=14)
